@@ -24,17 +24,17 @@ $postService = new \Tuiter\Services\PostService($mongoconn->tuiter->posts);
 $likeService = new \Tuiter\Services\LikeService($mongoconn->tuiter->likes);
 $followService = new \Tuiter\Services\FollowService($mongoconn->tuiter->follows, $userService);
 $loginService = new \Tuiter\Services\LoginService($userService);
+$commentService= new \Tuiter\Services\CommentService($mongoconn->tuiter->comments);
 
 
 $app = AppFactory::create();
 
 $app->add(function($serverRequest, $requestHandler)
             use ($twig, $loginService, $userService,
-            $postService, $likeService, $followService) {
+            $postService, $likeService, $followService, $commentService) {
 
     $user = $loginService->getLoggedUser();
     $serverRequest = $serverRequest->withAttribute("user", $user);
-    
     $serverRequest = $serverRequest->withAttribute("twig", $twig);
     $serverRequest = $serverRequest->withAttribute("userService", $userService);
     $serverRequest = $serverRequest->withAttribute("loginService", $loginService);
@@ -42,6 +42,7 @@ $app->add(function($serverRequest, $requestHandler)
     $serverRequest = $serverRequest->withAttribute("likeService", $likeService);
     $serverRequest = $serverRequest->withAttribute("postService", $postService);
     $serverRequest = $serverRequest->withAttribute('login', !$user instanceof \Tuiter\Models\UserNull);
+    $serverRequest = $serverRequest->withAttribute("commentService", $commentService);
 
     return $requestHandler->handle($serverRequest);
 });

@@ -1,0 +1,25 @@
+<html>
+    
+    <body>
+        
+        <p>
+             post de {{post}} <br> 
+             " {{postContent}} " <br> <br>
+             Comentarios:
+            {% for comment in comments %}
+            
+            <ul>
+                {{comment.getUserId()}}: <br>
+                {{comment.getContent()}}
+            </ul>
+            
+            {% endfor %}
+            <a href="/feed"> volver al feed </a>
+
+
+
+
+        </p>
+        
+    </body>
+</html>
